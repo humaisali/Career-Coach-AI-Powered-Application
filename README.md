@@ -1,7 +1,7 @@
 # AI Career Coach
 
 An advanced full-stack web application that analyzes a developer's GitHub profile,
-portfolio description, and resume — delivering honest, recruiter-level career insights
+portfolio description, and resume delivering honest, recruiter-level career insights
 powered by Gemini 2.5 Flash.
 
 ---
@@ -138,4 +138,4 @@ The Express server serves the compiled React app from `client/dist` in productio
 
 - The Gemini API key is passed per-request from the browser to the Express server
 - It is used immediately to call the Gemini API and is never logged or stored
-- GitHub data is fetched from the public GitHub REST API — no authentication required
+- GitHub data is fetched from the public GitHub REST API no authentication required
