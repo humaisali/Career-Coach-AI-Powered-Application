@@ -1,4 +1,9 @@
-export const API_BASE = '/api';
+const rawApiBase = import.meta.env.VITE_API_BASE?.trim();
+const normalizedApiBase = rawApiBase ? rawApiBase.replace(/\/+$/, '') : '';
+
+export const API_BASE = normalizedApiBase
+  ? (normalizedApiBase.endsWith('/api') ? normalizedApiBase : `${normalizedApiBase}/api`)
+  : '/api';
 
 export const DECISION_CONFIG = {
   Hire: {
