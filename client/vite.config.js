@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'https://career-coach-ohde.onrender.com',
         changeOrigin: true,
       },
     },
