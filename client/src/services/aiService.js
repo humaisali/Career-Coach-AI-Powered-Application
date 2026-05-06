@@ -1,5 +1,17 @@
 import { API_BASE } from '../constants';
 
+async function parseResponseSafely(res) {
+  const raw = await res.text();
+  if (!raw) return {};
+
+  try {
+    return JSON.parse(raw);
+  } catch {
+    // Some proxy/upstream failures can return non-JSON text or HTML.
+    return { error: raw };
+  }
+}
+
 /**
  * Sends all career data to the backend for analysis.
  * @param {object} params
@@ -24,7 +36,7 @@ export async function analyzeCareer({ githubLink, description, resumeFile, apiKe
     body: formData,
   });
 
-  const data = await res.json();
+  const data = await parseResponseSafely(res);
 
   if (!res.ok) {
     throw new Error(data.error || `Server error: ${res.status}`);
@@ -46,7 +58,7 @@ export async function prefetchGitHub(usernameOrUrl) {
   if (!username) throw new Error('Invalid GitHub URL.');
 
   const res = await fetch(`${API_BASE}/github/${encodeURIComponent(username)}`);
-  const data = await res.json();
+  const data = await parseResponseSafely(res);
 
   if (!res.ok) throw new Error(data.error || 'GitHub fetch failed.');
   return data;
