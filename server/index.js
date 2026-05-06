@@ -8,9 +8,35 @@ const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+function normalizeOrigin(origin) {
+  return String(origin || '').trim().replace(/\/+$/, '');
+}
+
+function getAllowedOrigins() {
+  const defaults = ['http://localhost:5173'];
+  const fromEnv = String(process.env.CLIENT_URL || '')
+    .split(',')
+    .map((value) => normalizeOrigin(value))
+    .filter(Boolean);
+
+  return [...new Set([...defaults, ...fromEnv])];
+}
+
+const allowedOrigins = getAllowedOrigins();
+
 // ── Middleware ──
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    // Allow same-origin/server-to-server requests with no Origin header.
+    if (!origin) return callback(null, true);
+
+    const normalizedRequestOrigin = normalizeOrigin(origin);
+    const isAllowed = allowedOrigins.includes(normalizedRequestOrigin);
+
+    if (isAllowed) return callback(null, true);
+
+    return callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
   credentials: true,
 }));
 app.use(express.json({ limit: '10mb' }));
