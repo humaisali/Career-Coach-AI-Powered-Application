@@ -47,11 +47,16 @@ function toAppError(err) {
     if (status === 403) {
       const remaining = err.response?.headers?.['x-ratelimit-remaining'];
       const isRateLimited = remaining === '0';
+      const resetAt = err.response?.headers?.['x-ratelimit-reset'];
+      const hasGithubToken = Boolean(String(process.env.GITHUB_TOKEN || '').trim());
+      const waitHint = resetAt
+        ? ` Try again after ${new Date(Number(resetAt) * 1000).toISOString()}.`
+        : '';
       return new AppError({
         status: 429,
         code: isRateLimited ? 'GITHUB_RATE_LIMIT' : 'GITHUB_FORBIDDEN',
         message: isRateLimited
-          ? 'GitHub rate limit reached. Please wait a bit and try again.'
+          ? `GitHub rate limit reached.${hasGithubToken ? '' : ' Configure GITHUB_TOKEN on the server to increase limit.'}${waitHint}`
           : 'GitHub request was forbidden. Please try again later.',
       });
     }

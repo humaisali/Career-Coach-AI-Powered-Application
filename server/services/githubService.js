@@ -2,6 +2,25 @@ const axios = require('axios');
 const { AppError } = require('../utils/AppError');
 
 const GITHUB_API = 'https://api.github.com';
+const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+const githubCache = new Map();
+
+function getCachedProfile(username) {
+  const entry = githubCache.get(username);
+  if (!entry) return null;
+  if (Date.now() > entry.expiresAt) {
+    githubCache.delete(username);
+    return null;
+  }
+  return entry.value;
+}
+
+function setCachedProfile(username, value) {
+  githubCache.set(username, {
+    value,
+    expiresAt: Date.now() + CACHE_TTL_MS,
+  });
+}
 
 /**
  * Fetches GitHub user profile and repository data.
@@ -23,10 +42,17 @@ async function fetchGitHubData(githubLink) {
     });
   }
 
+  const cached = getCachedProfile(username);
+  if (cached) return cached;
+
   const headers = {
     Accept: 'application/vnd.github.v3+json',
     'User-Agent': 'AI-Career-Coach/1.0',
   };
+  const githubToken = String(process.env.GITHUB_TOKEN || '').trim();
+  if (githubToken) {
+    headers.Authorization = `Bearer ${githubToken}`;
+  }
 
   const [userRes, reposRes] = await Promise.all([
     axios.get(`${GITHUB_API}/users/${username}`, { headers }),
@@ -60,7 +86,7 @@ async function fetchGitHubData(githubLink) {
       updatedAt: r.updated_at,
     }));
 
-  return {
+  const profile = {
     username,
     name: user.name || null,
     bio: user.bio || null,
@@ -78,6 +104,9 @@ async function fetchGitHubData(githubLink) {
     topRepos,
     repoCount: repos.length,
   };
+
+  setCachedProfile(username, profile);
+  return profile;
 }
 
 module.exports = { fetchGitHubData };
