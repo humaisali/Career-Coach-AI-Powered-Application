@@ -89,7 +89,7 @@ export default function ReviewPanel({ data }) {
   return (
     <section className="anim-fade-up">
       {/* Verdict card */}
-      <div className="card" style={{ padding: '28px 30px', marginBottom: 14 }}>
+      <div className="card" style={{ padding: 'clamp(16px, 3vw, 28px) clamp(14px, 3vw, 30px)', marginBottom: 14 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 28, flexWrap: 'wrap' }}>
           <ScoreRing score={score} />
           <div style={{ flex: 1, minWidth: 220 }}>
