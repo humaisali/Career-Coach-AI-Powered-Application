@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Github, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { Github, CheckCircle, AlertCircle, Loader2, ExternalLink } from 'lucide-react';
 import { prefetchGitHub } from '../services/aiService';
 
 export default function GitHubInput({ value, onChange, onVerified }) {
@@ -39,6 +39,15 @@ export default function GitHubInput({ value, onChange, onVerified }) {
       <div className="label">
         <Github size={13} />
         GitHub Profile URL
+        <a
+          className="interactive-link"
+          href="https://github.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4, fontSize: 10, color: 'var(--accent)', textDecoration: 'none', fontWeight: 600, textTransform: 'none', letterSpacing: 0 }}
+        >
+          Open GitHub <ExternalLink size={9} />
+        </a>
       </div>
 
       <div style={{ position: 'relative' }}>

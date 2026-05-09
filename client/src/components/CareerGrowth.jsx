@@ -39,7 +39,7 @@ export default function CareerGrowth({ data }) {
   const cfg = SKILL_LEVEL[skillLevel] || SKILL_LEVEL.Intermediate;
 
   return (
-    <div className="card anim-fade-up d4" style={{ padding: '28px 32px' }}>
+    <div className="card anim-fade-up d4" style={{ padding: 'clamp(16px, 3vw, 28px) clamp(14px, 3vw, 32px)' }}>
       <div className="section-label">
         <div className="section-label-icon" style={{ background: 'var(--green-dim)' }}>
           <TrendingUp size={15} style={{ color: 'var(--green)' }} />

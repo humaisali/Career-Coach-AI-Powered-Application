@@ -86,7 +86,7 @@ export default function JobPrediction({ jobRoles, recommendedProjects }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 
       {/* Job Roles */}
-      <div className="card anim-fade-up d2" style={{ padding: '24px 28px' }}>
+      <div className="card anim-fade-up d2" style={{ padding: 'clamp(16px, 3vw, 24px) clamp(14px, 3vw, 28px)' }}>
         <div className="section-label">
           <div className="section-label-icon" style={{ background: 'var(--purple-dim)' }}>
             <Briefcase size={15} style={{ color: 'var(--purple)' }} />
@@ -102,7 +102,7 @@ export default function JobPrediction({ jobRoles, recommendedProjects }) {
       </div>
 
       {/* Recommended Projects */}
-      <div className="card anim-fade-up d3" style={{ padding: '24px 28px' }}>
+      <div className="card anim-fade-up d3" style={{ padding: 'clamp(16px, 3vw, 24px) clamp(14px, 3vw, 28px)' }}>
         <div className="section-label">
           <div className="section-label-icon" style={{ background: 'var(--amber-dim)' }}>
             <Zap size={15} style={{ color: 'var(--amber)' }} />
