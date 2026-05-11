@@ -51,7 +51,7 @@ export default function SkillChart({ skills }) {
   const radarData  = entries.map(([skill, value]) => ({ skill, value, fullMark: 100 }));
 
   return (
-    <div className="card anim-fade-up d1" style={{ padding: '24px 28px' }}>
+    <div className="card anim-fade-up d1" style={{ padding: 'clamp(16px, 3vw, 24px) clamp(14px, 3vw, 28px)' }}>
       <div className="section-label">
         <div className="section-label-icon" style={{ background: 'rgba(59,130,246,0.1)' }}>
           <BarChart2 size={15} style={{ color: 'var(--accent)' }} />
@@ -62,7 +62,7 @@ export default function SkillChart({ skills }) {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, alignItems: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 24, alignItems: 'center' }}>
         {/* Progress bars */}
         <div>
           {entries.map(([label, value], i) => (
